@@ -1,0 +1,31 @@
+import 'package:flutter/material.dart';
+//Add this changeNotifier to listen to the changes and access the provider, it will become clearer in the state management section (extends sonrası sanırım)
+class MenuController extends ChangeNotifier {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _gridScaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _addProductScaffoldKey =
+  GlobalKey<ScaffoldState>();
+  // Getters
+  GlobalKey<ScaffoldState> get getScaffoldKey => _scaffoldKey;
+  GlobalKey<ScaffoldState> get getgridscaffoldKey => _gridScaffoldKey;
+  GlobalKey<ScaffoldState> get getAddProductscaffoldKey => _addProductScaffoldKey;
+
+  // Callbacks
+  void controlDashboarkMenu() { // for now our application is based on this function
+    if (!_scaffoldKey.currentState!.isDrawerOpen) { //it checks that if the drawer is open or not
+      _scaffoldKey.currentState!.openDrawer();
+    }
+  }
+
+  void controlProductsMenu() {
+    if (!_gridScaffoldKey.currentState!.isDrawerOpen) {
+      _gridScaffoldKey.currentState!.openDrawer();
+    }
+  }
+
+  void controlAddProductsMenu() {
+    if (!_addProductScaffoldKey.currentState!.isDrawerOpen) {
+      _addProductScaffoldKey.currentState!.openDrawer();
+    }
+  }
+}
