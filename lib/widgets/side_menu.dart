@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
+import 'package:ushop_admin_panel/inner_screens/all_products.dart';
 import 'package:ushop_admin_panel/providers/dark_theme_provider.dart';
 import 'package:ushop_admin_panel/screens/main_screen.dart';
 import 'package:ushop_admin_panel/services/utils.dart';
@@ -44,7 +45,9 @@ class _SideMenuState extends State<SideMenu> {
           DrawerListTile(
             title: "View all products",
             press: () {
-
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => AllProductsScreen() )
+              );
             },
             icon: Icons.store,
           ),
