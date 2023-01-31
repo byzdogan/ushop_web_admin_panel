@@ -64,7 +64,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                   ],
                 ),
                 const SizedBox(
-                  height: 2,
+                  height: 4, //
                 ),
                 Row(
                   children: [
@@ -93,7 +93,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                   ],
                 ),
                 const SizedBox(
-                  height: 2,
+                  height: 4, //2
                 ),
                 TextWidget(
                   text: 'Title',

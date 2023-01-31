@@ -42,7 +42,7 @@ class _SideMenuState extends State<SideMenu> {
             icon: Icons.home_filled,
           ),
           DrawerListTile(
-            title: "View all product",
+            title: "View all products",
             press: () {
 
             },
