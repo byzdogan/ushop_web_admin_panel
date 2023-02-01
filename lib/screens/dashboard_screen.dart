@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:ushop_admin_panel/consts/constants.dart';
 import 'package:ushop_admin_panel/controllers/MenuController.dart';
+import 'package:ushop_admin_panel/inner_screens/all_products.dart';
 import 'package:ushop_admin_panel/responsive.dart';
 import 'package:ushop_admin_panel/services/utils.dart';
+import 'package:ushop_admin_panel/widgets/buttons.dart';
 import 'package:ushop_admin_panel/widgets/grid_products.dart';
 import 'package:ushop_admin_panel/widgets/header.dart';
 import 'package:provider/provider.dart';
 import 'package:ushop_admin_panel/widgets/orders_list.dart';
 import 'package:ushop_admin_panel/widgets/products_widget.dart';
+import 'package:ushop_admin_panel/widgets/text_widget.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({Key? key}) : super(key: key);
@@ -15,6 +18,7 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = Utils(context).getScreenSize;
+    Color color = Utils(context).color;
     return SafeArea(
       child: SingleChildScrollView(
         controller: ScrollController(),
@@ -26,12 +30,51 @@ class DashboardScreen extends StatelessWidget {
                 context.read<MenuController>().controlDashboardMenu(); //how to access a provider
               },
             ),
-            const SizedBox(height: defaultPadding),
+            const SizedBox(
+                height: defaultPadding, //height: 20,
+            ),
+            TextWidget(
+              isTitle: true,
+              text: "Latest Products",
+              color: color,
+            ),
+            const SizedBox(
+                height: defaultPadding, //height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                children: [
+                  ButtonsWidget(
+                      onPressed: () {
+                        //ben ekledim
+                        Navigator.pushReplacement(context,
+                            MaterialPageRoute(builder: (context) => AllProductsScreen() )
+                        );
+                      },
+                      text: "View All",
+                      icon: Icons.store,
+                      backgroundColor: Colors.cyan),
+                  const Spacer(),
+                  ButtonsWidget(
+                      onPressed: () {},
+                      text: "Add a new product",
+                      icon: Icons.add,
+                      backgroundColor: Colors.cyan),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: defaultPadding, //height: 15,
+            ),
+            const SizedBox(
+              height: 15,
+            ),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
-                  flex: 5,
+                  //flex: 5,
                   child: Column(
                     children: [
                       Responsive(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:ushop_admin_panel/consts/constants.dart';
 import 'package:ushop_admin_panel/controllers/MenuController.dart';
 import 'package:ushop_admin_panel/responsive.dart';
 import 'package:ushop_admin_panel/services/utils.dart';
@@ -38,6 +39,7 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
               flex: 5,
               child: SingleChildScrollView(
                 controller: ScrollController(),
+                padding: const EdgeInsets.all(defaultPadding),
                 child: Column(
                   children: [
                     Header(

@@ -40,7 +40,7 @@ class Header extends StatelessWidget {
           child: TextField(
             decoration: InputDecoration(
               hintText: "Search",
-              fillColor: Theme.of(context).cardColor,
+              fillColor: Colors.yellow[700]?.withOpacity(0.8),//Theme.of(context).cardColor,
               filled: true,
               border: const OutlineInputBorder(
                 borderSide: BorderSide.none,

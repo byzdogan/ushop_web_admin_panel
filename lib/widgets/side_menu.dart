@@ -60,7 +60,8 @@ class _SideMenuState extends State<SideMenu> {
                   MaterialPageRoute(builder: (context) => AllOrdersScreen() )
               );
             },
-            icon: IconlyBold.bag_2,
+            //icon: IconlyBold.bag_2,
+            icon: Icons.shopping_bag,
           ),
           SwitchListTile(
               title: const Text('Theme'),
