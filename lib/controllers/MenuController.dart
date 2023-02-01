@@ -3,15 +3,17 @@ import 'package:flutter/material.dart';
 class MenuController extends ChangeNotifier {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<ScaffoldState> _gridScaffoldKey = GlobalKey<ScaffoldState>();
-  final GlobalKey<ScaffoldState> _addProductScaffoldKey =
-  GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _addProductScaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> _ordersScaffoldKey = GlobalKey<ScaffoldState>();
+
   // Getters
   GlobalKey<ScaffoldState> get getScaffoldKey => _scaffoldKey;
-  GlobalKey<ScaffoldState> get getgridscaffoldKey => _gridScaffoldKey;
-  GlobalKey<ScaffoldState> get getAddProductscaffoldKey => _addProductScaffoldKey;
+  GlobalKey<ScaffoldState> get getGridScaffoldKey => _gridScaffoldKey;
+  GlobalKey<ScaffoldState> get getAddProductScaffoldKey => _addProductScaffoldKey;
+  GlobalKey<ScaffoldState> get getOrdersScaffoldKey => _ordersScaffoldKey;
 
   // Callbacks
-  void controlDashboarkMenu() { // for now our application is based on this function
+  void controlDashboardMenu() { // for now our application is based on this function
     if (!_scaffoldKey.currentState!.isDrawerOpen) { //it checks that if the drawer is open or not
       _scaffoldKey.currentState!.openDrawer();
     }
@@ -26,6 +28,12 @@ class MenuController extends ChangeNotifier {
   void controlAddProductsMenu() {
     if (!_addProductScaffoldKey.currentState!.isDrawerOpen) {
       _addProductScaffoldKey.currentState!.openDrawer();
+    }
+  }
+
+  void controlAllOrders() { // for now our application is based on this function
+    if (!_ordersScaffoldKey.currentState!.isDrawerOpen) { //it checks that if the drawer is open or not
+      _ordersScaffoldKey.currentState!.openDrawer();
     }
   }
 }

@@ -5,21 +5,23 @@ import 'package:ushop_admin_panel/responsive.dart';
 import 'package:ushop_admin_panel/services/utils.dart';
 import 'package:ushop_admin_panel/widgets/grid_products.dart';
 import 'package:ushop_admin_panel/widgets/header.dart';
+import 'package:ushop_admin_panel/widgets/orders_list.dart';
+import 'package:ushop_admin_panel/widgets/orders_widget.dart';
 import 'package:ushop_admin_panel/widgets/side_menu.dart';
 
-class AllProductsScreen extends StatefulWidget {
-  const AllProductsScreen({Key? key}) : super(key: key);
+class AllOrdersScreen extends StatefulWidget {
+  const AllOrdersScreen({Key? key}) : super(key: key);
 
   @override
-  State<AllProductsScreen> createState() => _AllProductsScreenState();
+  State<AllOrdersScreen> createState() => _AllOrdersScreenState();
 }
 
-class _AllProductsScreenState extends State<AllProductsScreen> {
+class _AllOrdersScreenState extends State<AllOrdersScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = Utils(context).getScreenSize;
     return Scaffold(
-      key: context.read<MenuController>().getGridScaffoldKey,
+      key: context.read<MenuController>().getOrdersScaffoldKey,
       //önceden scaffold key idi böylöyle drawerı başka yerden kontrol etmiş oluyoruz
       drawer: const SideMenu(),
       body: SafeArea(
@@ -42,22 +44,16 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                   children: [
                     Header(
                       fct: () {
-                        context.read<MenuController>().controlProductsMenu(); //how to access a provider
-                       //key değiştiği için burdaki menu de değişmeli. önceden dahboard menu idi.
+                        context.read<MenuController>().controlAllOrders(); //how to access a provider
+                        //key değiştiği için burdaki menu de değişmeli. önceden dahboard menu idi.
                       },
                     ),
-                    Responsive(
-                      mobile: ProductGridWidget(
-                        crossAxisCount: size.width < 755 ? 2 : 4, //650
-                        childAspectRatio:
-                        size.width < 650 && size.width > 350 ? 1.1 : 0.8,
-                        isInMain: false,
+                      const SizedBox(height: 20,),
+                      const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: OrdersList(),
                       ),
-                      desktop: ProductGridWidget(
-                        childAspectRatio: size.width < 1400 ? 0.8 : 1.05,
-                        isInMain: false,
-                      ),
-                    )
+
                   ],
                 ),
               ),

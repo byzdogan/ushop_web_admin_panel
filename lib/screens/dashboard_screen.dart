@@ -6,6 +6,7 @@ import 'package:ushop_admin_panel/services/utils.dart';
 import 'package:ushop_admin_panel/widgets/grid_products.dart';
 import 'package:ushop_admin_panel/widgets/header.dart';
 import 'package:provider/provider.dart';
+import 'package:ushop_admin_panel/widgets/orders_list.dart';
 import 'package:ushop_admin_panel/widgets/products_widget.dart';
 
 class DashboardScreen extends StatelessWidget {
@@ -16,12 +17,13 @@ class DashboardScreen extends StatelessWidget {
     Size size = Utils(context).getScreenSize;
     return SafeArea(
       child: SingleChildScrollView(
+        controller: ScrollController(),
         padding: const EdgeInsets.all(defaultPadding),
         child: Column(
           children: [
             Header(
               fct: () {
-                context.read<MenuController>().controlDashboarkMenu(); //how to access a provider
+                context.read<MenuController>().controlDashboardMenu(); //how to access a provider
               },
             ),
             const SizedBox(height: defaultPadding),
@@ -41,7 +43,8 @@ class DashboardScreen extends StatelessWidget {
                         desktop: ProductGridWidget(
                           childAspectRatio: size.width < 1400 ? 0.8 : 1.05,
                         ),
-                      )
+                      ),
+                      const OrdersList(),
                     ],
                   ),
                 ),

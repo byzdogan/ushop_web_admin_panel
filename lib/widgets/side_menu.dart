@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:provider/provider.dart';
+import 'package:ushop_admin_panel/inner_screens/all_orders_screen.dart';
 import 'package:ushop_admin_panel/inner_screens/all_products.dart';
 import 'package:ushop_admin_panel/providers/dark_theme_provider.dart';
 import 'package:ushop_admin_panel/screens/main_screen.dart';
 import 'package:ushop_admin_panel/services/utils.dart';
+import 'package:ushop_admin_panel/widgets/orders_list.dart';
 import 'package:ushop_admin_panel/widgets/text_widget.dart';
 
 class SideMenu extends StatefulWidget {
@@ -53,7 +55,11 @@ class _SideMenuState extends State<SideMenu> {
           ),
           DrawerListTile(
             title: "View all order",
-            press: () {},
+            press: () {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => AllOrdersScreen() )
+              );
+            },
             icon: IconlyBold.bag_2,
           ),
           SwitchListTile(

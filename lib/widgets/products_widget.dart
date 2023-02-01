@@ -26,7 +26,7 @@ class _ProductWidgetState extends State<ProductWidget> {
           borderRadius: BorderRadius.circular(12),
           onTap: () {},
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(5.0), //8 yapınca pixel error
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,7 +41,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                         "https://cdn.dsmcdn.com/ty644/product/media/images/20221213/11/235843656/154436277/1/1_org_zoom.jpg",
                         fit: BoxFit.fill,
                         // width: screenWidth * 0.12,
-                        height: size.width * 0.12,
+                        height: size.width * 0.16, //12
                       ),
                     ),
                     const Spacer(),
