@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ushop_admin_panel/consts/constants.dart';
 import 'package:ushop_admin_panel/controllers/MenuController.dart';
+import 'package:ushop_admin_panel/inner_screens/add_product.dart';
 import 'package:ushop_admin_panel/inner_screens/all_products.dart';
 import 'package:ushop_admin_panel/responsive.dart';
+import 'package:ushop_admin_panel/services/global_method.dart';
 import 'package:ushop_admin_panel/services/utils.dart';
 import 'package:ushop_admin_panel/widgets/buttons.dart';
 import 'package:ushop_admin_panel/widgets/grid_products.dart';
@@ -26,6 +28,7 @@ class DashboardScreen extends StatelessWidget {
         child: Column(
           children: [
             Header(
+              title: "Dashboard",
               fct: () {
                 context.read<MenuController>().controlDashboardMenu(); //how to access a provider
               },
@@ -47,7 +50,6 @@ class DashboardScreen extends StatelessWidget {
                 children: [
                   ButtonsWidget(
                       onPressed: () {
-                        //ben ekledim
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) => AllProductsScreen() )
                         );
@@ -57,7 +59,13 @@ class DashboardScreen extends StatelessWidget {
                       backgroundColor: Colors.cyan),
                   const Spacer(),
                   ButtonsWidget(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const UploadProductForm(),
+                          ),
+                        );
+                      },
                       text: "Add a new product",
                       icon: Icons.add,
                       backgroundColor: Colors.cyan),

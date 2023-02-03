@@ -42,12 +42,15 @@ class _AllProductsScreenState extends State<AllProductsScreen> {
                 padding: const EdgeInsets.all(defaultPadding),
                 child: Column(
                   children: [
+                    const SizedBox(height: 15,),//25
                     Header(
+                      title: "All Products in the USHOP",
                       fct: () {
                         context.read<MenuController>().controlProductsMenu(); //how to access a provider
                        //key değiştiği için burdaki menu de değişmeli. önceden dahboard menu idi.
                       },
                     ),
+                    const SizedBox(height: 25,),
                     Responsive(
                       mobile: ProductGridWidget(
                         crossAxisCount: size.width < 755 ? 2 : 4, //650

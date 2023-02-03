@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ushop_admin_panel/consts/theme_data.dart';
 import 'package:ushop_admin_panel/controllers/MenuController.dart';
+import 'package:ushop_admin_panel/inner_screens/add_product.dart';
 import 'package:ushop_admin_panel/providers/dark_theme_provider.dart';
 import 'package:ushop_admin_panel/screens/main_screen.dart';
 
@@ -50,6 +51,10 @@ class _MyAppState extends State<MyApp> {
             title: "USHOP",
             theme: Styles.themeData(themeProvider.getDarkTheme, context),
             home: const MainScreen(),
+            routes: {
+              UploadProductForm.routeName: (context) =>
+              const UploadProductForm(),
+            }
           );
           },
     ),

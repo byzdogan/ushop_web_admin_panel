@@ -44,7 +44,9 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
                 padding: const EdgeInsets.all(defaultPadding),
                 child: Column(
                   children: [
+                    const SizedBox(height: 15,),
                     Header(
+                      title: "All Orders",
                       fct: () {
                         context.read<MenuController>().controlAllOrders(); //how to access a provider
                         //key değiştiği için burdaki menu de değişmeli. önceden dahboard menu idi.
