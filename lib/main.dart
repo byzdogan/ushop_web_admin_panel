@@ -51,10 +51,7 @@ class _MyAppState extends State<MyApp> {
             title: "USHOP",
             theme: Styles.themeData(themeProvider.getDarkTheme, context),
             home: const MainScreen(),
-            routes: {
-              UploadProductForm.routeName: (context) =>
-              const UploadProductForm(),
-            }
+
           );
           },
     ),

@@ -1,7 +1,11 @@
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconly/iconly.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:ushop_admin_panel/controllers/MenuController.dart';
 import 'package:ushop_admin_panel/responsive.dart';
@@ -12,7 +16,7 @@ import 'package:ushop_admin_panel/widgets/side_menu.dart';
 import 'package:ushop_admin_panel/widgets/text_widget.dart';
 
 class UploadProductForm extends StatefulWidget {
-  static const routeName = '/UploadProductForm';
+  //static const routeName = '/UploadProductForm';
 
   const UploadProductForm({Key? key}) : super(key: key);
 
@@ -25,6 +29,8 @@ class _UploadProductFormState extends State<UploadProductForm> {
   final _formKey = GlobalKey<FormState>();
   String _catValue = "Clothes";
   late final TextEditingController _titleController, _priceController;
+  File? _pickedImage;
+  Uint8List webImage = Uint8List(8);
 
   int _groupValue = 1;
   bool isPiece = false;
@@ -33,7 +39,6 @@ class _UploadProductFormState extends State<UploadProductForm> {
   void initState() {
     _priceController = TextEditingController();
     _titleController = TextEditingController();
-
     super.initState();
   }
 
@@ -46,6 +51,17 @@ class _UploadProductFormState extends State<UploadProductForm> {
 
   void _uploadForm() async {
     final isValid = _formKey.currentState!.validate();
+  }
+
+  void _clearForm() {
+    isPiece = false;
+    _groupValue = 1;
+    _priceController.clear();
+    _titleController.clear();
+    setState(() {
+      _pickedImage = null;
+      webImage = Uint8List(8);
+    });
   }
 
   @override
@@ -93,7 +109,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                   ),                  
                   const SizedBox(height: 25,),
                   Container(
-                    width: size.width > 650 ? 650 : size.width,
+                    width: size.width > 755 ? 755 : size.width,
                     color: Theme.of(context).cardColor,
                     padding: const EdgeInsets.all(16),
                     margin: const EdgeInsets.all(16),
@@ -105,7 +121,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           TextWidget(
-                            text: 'Product title*',
+                            text: "Product title*",
                             color: color,
                             isTitle: true,
                           ),
@@ -114,10 +130,10 @@ class _UploadProductFormState extends State<UploadProductForm> {
                           ),
                           TextFormField(
                             controller: _titleController,
-                            key: const ValueKey('Title'),
+                            key: const ValueKey("Title"),
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return 'Please enter a Title';
+                                return "Please enter a title";
                               }
                               return null;
                             },
@@ -132,12 +148,11 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                 flex: 2,
                                 child: FittedBox(
                                   child: Column(
-                                    crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       TextWidget(
-                                        text: 'Price in ₺*',
+                                        text: "Price in ₺*",
                                         color: color,
                                         isTitle: true,
                                       ),
@@ -145,20 +160,21 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                         height: 10,
                                       ),
                                       SizedBox(
-                                        width: 100,
+                                        width: 150,
                                         child: TextFormField(
                                           controller: _priceController,
-                                          key: const ValueKey('Price ₺'),
+                                          key: const ValueKey("Price ₺"),
                                           keyboardType: TextInputType.number,
                                           validator: (value) {
                                             if (value!.isEmpty) {
-                                              return 'Price is missed';
+                                              return "Please enter a price";
                                             }
                                             return null;
                                           },
                                           inputFormatters: <TextInputFormatter>[
                                             FilteringTextInputFormatter.allow(
-                                                RegExp(r'[0-9.]')),
+                                                RegExp(r'[0-9.]')
+                                            ),
                                           ],
                                           decoration: inputDecoration,
                                         ),
@@ -175,8 +191,8 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                       const SizedBox(
                                         height: 20,
                                       ),
-                                      TextWidget(
-                                        text: "\"Measure unit\"",
+                                      /*TextWidget(
+                                        text: "Measure unit",
                                         color: color,
                                         isTitle: true,
                                       ),
@@ -218,8 +234,7 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                             activeColor: Colors.cyan,
                                           ),
                                         ],
-                                      )
-
+                                      )*/
                                     ],
                                   ),
                                 ),
@@ -238,7 +253,16 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                           .scaffoldBackgroundColor,
                                       borderRadius: BorderRadius.circular(12.0),
                                     ),
-                                    child: dottedBorder(color: color),
+                                      child: _pickedImage == null
+                                          ? dottedBorder(color: color)
+                                          : ClipRRect(
+                                              borderRadius: BorderRadius.circular(12),
+                                              child: kIsWeb
+                                                  ? Image.memory(webImage,
+                                                  fit: BoxFit.fill)
+                                                  : Image.file(_pickedImage!,
+                                                  fit: BoxFit.fill),
+                                            )
                                   ),
                                 ),
                               ),
@@ -248,22 +272,32 @@ class _UploadProductFormState extends State<UploadProductForm> {
                                     child: Column(
                                       children: [
                                         TextButton(
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            setState(() {
+                                              _pickedImage = null;
+                                              webImage = Uint8List(8);
+                                            });
+                                          },
                                           child: TextWidget(
-                                            text: 'Clear',
+                                            isTitle: true,
+                                            text: "Clear",
+                                            textSize: 20,
                                             color: Colors.redAccent,
                                           ),
                                         ),
                                         TextButton(
                                           onPressed: () {},
                                           child: TextWidget(
-                                            text: 'Update image',
+                                            isTitle: true,
+                                            textSize: 20,
+                                            text: "Update image",
                                             color: Colors.cyan,
                                           ),
                                         ),
                                       ],
                                     ),
-                                  )),
+                                  )
+                              ),
                             ],
                           ),
                           Padding(
@@ -272,17 +306,17 @@ class _UploadProductFormState extends State<UploadProductForm> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 ButtonsWidget(
-                                  onPressed: () {},
-                                  text: 'Clear form',
-                                  icon: IconlyBold.danger,
+                                  onPressed: _clearForm,
+                                  text: "Clear form",
+                                  icon: Icons.warning_amber,
                                   backgroundColor: Colors.red.shade300,
                                 ),
                                 ButtonsWidget(
                                   onPressed: () {
                                     _uploadForm();
                                   },
-                                  text: 'Upload',
-                                  icon: IconlyBold.upload,
+                                  text: "Upload the product",
+                                  icon: Icons.file_upload,
                                   backgroundColor: Colors.cyan,
                                 ),
                               ],
@@ -301,6 +335,35 @@ class _UploadProductFormState extends State<UploadProductForm> {
     );
   }
 
+  Future<void> _pickImage() async {
+    if (!kIsWeb) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var selected = File(image.path);
+        setState(() {
+          _pickedImage = selected;
+        });
+      } else {
+        print("You have to choose an image first!");
+      }
+    } else if (kIsWeb) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null) {
+        var f = await image.readAsBytes();
+        setState(() {
+          webImage = f;
+          _pickedImage = File("a");
+        });
+      } else {
+        print("There is not an image has been picked");
+      }
+    } else {
+      print("Something went wrong!");
+    }
+  }
+
   Widget dottedBorder({
     required Color color,
   }) {
@@ -317,7 +380,8 @@ class _UploadProductFormState extends State<UploadProductForm> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.image_outlined,
+                  Icons.add_photo_alternate,
+                  //Icons.image_outlined,
                   color: color,
                   size: 50,
                 ),
@@ -325,14 +389,18 @@ class _UploadProductFormState extends State<UploadProductForm> {
                   height: 20,
                 ),
                 TextButton(
-                    onPressed: (() {}),
+                    onPressed: (() {
+                      _pickImage();
+                    }),
                     child: TextWidget(
-                      text: "Choose an image",
+                      text: "Choose an image\n  for the product",
                       color: Colors.cyan,
-                    ))
+                    )
+                )
               ],
             ),
-          )),
+          )
+      ),
     );
   }
 
@@ -366,15 +434,15 @@ class _UploadProductFormState extends State<UploadProductForm> {
                 ),
                 DropdownMenuItem(
                   child: Text(
-                    "Cat2",
+                    "Accessories",
                   ),
-                  value: "Cat2",
+                  value: "Accessories",
                 ),
                 DropdownMenuItem(
                   child: Text(
-                    "Cat3",
+                    "Stationeries",
                   ),
-                  value: "Cat3",
+                  value: "Stationeries",
                 ),
                 DropdownMenuItem(
                   child: Text(
@@ -383,7 +451,8 @@ class _UploadProductFormState extends State<UploadProductForm> {
                   value: "Others",
                 ),
               ],
-            )),
+            )
+        ),
       ),
     );
   }
