@@ -20,6 +20,7 @@ void main() async {
       appId: "1:587526600299:web:cbc4fe1f8194ea0ed3a32e", // Your appId
       messagingSenderId: "587526600299", // Your messagingSenderId
       projectId: "ushopecommerceapplication", // Your projectId
+      storageBucket: "ushopecommerceapplication.appspot.com",
     ),
   );
   runApp(const MyApp());
