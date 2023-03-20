@@ -79,7 +79,7 @@ class _ProductWidgetState extends State<ProductWidget> {
         child: InkWell( //it allows you to press on it
           borderRadius: BorderRadius.circular(12),
           onTap: () {
-            Navigator.of(context).pushReplacement(
+            Navigator.of(context).push(
               MaterialPageRoute(
                   builder: (context) => EditProductScreen(
                       id: widget.id,
@@ -113,7 +113,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                         : imageUrl!,
                         fit: BoxFit.fill,
                         // width: screenWidth * 0.12,
-                        height: size.width * 0.16, //12
+                        height: size.width * 0.14, //12
                       ),
                     ),
                     const Spacer(),
@@ -157,12 +157,17 @@ class _ProductWidgetState extends State<ProductWidget> {
                               color: color),
                         )),
                     const Spacer(),
-                    TextWidget(
+                    /*TextWidget(
                       text: "Quantity", //isPiece ? "Piece" : "Kg",
                       color: color,
                       textSize: 18,
-                    ),
+                    ),*/
                   ],
+                ),
+                TextWidget(
+                  text: "Stock :", //isPiece ? "Piece" : "Kg",
+                  color: color,
+                  textSize: 18,
                 ),
                 const SizedBox(
                   height: 4, //2

@@ -1,9 +1,12 @@
 import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iconly/iconly.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -87,6 +90,72 @@ class _EditProductScreenState extends State<EditProductScreen> {
     _priceController.dispose();
     _titleController.dispose();
     super.dispose();
+  }
+
+  void _updateProduct() async {
+    final isValid = _formKey.currentState!.validate(); //to check if the form is valid
+    FocusScope.of(context).unfocus(); //remove focus from the text
+    String? imageUrl;
+    if (isValid) {
+      _formKey.currentState!.save();
+      if (isValid) {
+        _formKey.currentState!.save();
+        try {
+          //Uri? imageUri;
+          setState(() {
+            _isLoading = true;
+          });
+          if(_pickedImage != null) {
+            final ref = FirebaseStorage.instance.ref()
+                .child("productImages")
+                .child("${widget.id}.jpg");
+            if (kIsWeb) {
+              await ref.putData(webImage);
+            } else {
+              await ref.putFile(_pickedImage!);
+            }
+            imageUrl = await ref.getDownloadURL();
+          }
+          await FirebaseFirestore.instance.collection('products')
+              .doc(widget.id)
+              .update({
+            "title": _titleController.text,
+            "price": _priceController.text,
+            "salePrice": _salePrice,
+            "imageUrl": _pickedImage == null ? widget.imageUrl : imageUrl.toString(),
+            "productCategoryName": _catValue,
+            "isOnSale": _isOnSale,
+          });
+          await Fluttertoast.showToast(
+            msg: "Product has been updated!",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.CENTER,
+            timeInSecForIosWeb: 1,
+            // backgroundColor: ,
+            // textColor: ,
+            // fontSize: 16.0
+          );
+        } on FirebaseException catch (error) {
+          GlobalMethods.errorDialog(
+              error: "${error.message}",
+              context: context);
+          setState(() {
+            _isLoading = false;
+          });
+        } catch (error) {
+          GlobalMethods.errorDialog(
+              error: "$error",
+              context: context);
+          setState(() {
+            _isLoading = false;
+          });
+        } finally {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
+    }
   }
 
   @override
@@ -374,24 +443,36 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                   ButtonsWidget(
                                     onPressed: () async {
                                       GlobalMethods.warningDialog(
-                                          title: 'Delete?',
-                                          subtitle: 'Press okay to confirm',
+                                          title: "Do you want to delete the product?",
+                                          subtitle: "After you delete the product, it can not be recovered! Press OK to confirm.",
                                           fct: () async {
-                                            Navigator.pop(context);
+                                            FirebaseFirestore.instance
+                                                .collection("products")
+                                                .doc(widget.id)
+                                                .delete();
+                                            await Fluttertoast.showToast(
+                                              msg: "Product has beeen deleted!",
+                                              toastLength: Toast.LENGTH_LONG,
+                                              gravity: ToastGravity.CENTER,
+                                              timeInSecForIosWeb: 1,
+                                            );
+                                            while (Navigator.canPop(context)){
+                                              Navigator.pop(context);
+                                            }
                                           },
                                           context: context);
                                     },
-                                    text: 'Delete',
+                                    text: "Delete",
                                     icon: IconlyBold.danger,
-                                    backgroundColor: Colors.red.shade700,
+                                    backgroundColor: Colors.redAccent,
                                   ),
                                   ButtonsWidget(
                                     onPressed: () {
-                                      // _uploadForm();
+                                       _updateProduct();
                                     },
-                                    text: 'Update',
+                                    text: "Update",
                                     icon: IconlyBold.setting,
-                                    backgroundColor: Colors.blue,
+                                    backgroundColor: Colors.cyan,
                                   ),
                                 ],
                               ),
