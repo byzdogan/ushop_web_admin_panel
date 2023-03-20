@@ -1,17 +1,71 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:ushop_admin_panel/inner_screens/edit_product.dart';
+import 'package:ushop_admin_panel/services/global_method.dart';
 import 'package:ushop_admin_panel/services/utils.dart';
 import 'package:ushop_admin_panel/widgets/text_widget.dart';
 
 class ProductWidget extends StatefulWidget {
   const ProductWidget({
     Key? key,
+    required this.id,
   }) : super(key: key);
+  final String id;
 
   @override
   _ProductWidgetState createState() => _ProductWidgetState();
 }
 
 class _ProductWidgetState extends State<ProductWidget> {
+  bool _isLoading = false;
+  String title = "";
+  String productCategory = "";
+  String? imageUrl;
+  String price = "0.0";
+  double salePrice = 0.0;
+  bool isOnSale = false;
+  //bool isPiece = false;
+
+  @override
+  void initState() {
+    getProductsData();
+    super.initState();
+  }
+
+  Future<void> getProductsData() async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      final DocumentSnapshot productsDoc = await FirebaseFirestore.instance
+          .collection("products")
+          .doc(widget.id)
+          .get();
+      if (productsDoc == null) {
+        return;
+      } else {
+        setState(() {
+          title = productsDoc.get("title");
+          productCategory = productsDoc.get("productCategoryName");
+          imageUrl = productsDoc.get("imageUrl");
+          price = productsDoc.get("price");
+          salePrice = productsDoc.get("salePrice");
+          isOnSale = productsDoc.get("isOnSale");
+          //isPiece = productsDoc.get('isPiece');
+        });
+      }
+    } catch (error) {
+      setState(() {
+        _isLoading = false;
+      });
+      GlobalMethods.errorDialog(error: '$error', context: context);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = Utils(context).getScreenSize;
@@ -24,7 +78,23 @@ class _ProductWidgetState extends State<ProductWidget> {
         color: Theme.of(context).cardColor.withOpacity(0.6),
         child: InkWell( //it allows you to press on it
           borderRadius: BorderRadius.circular(12),
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) => EditProductScreen(
+                      id: widget.id,
+                      title: title,
+                      price: price,
+                      salePrice: salePrice,
+                      productCat: productCategory,
+                      imageUrl: imageUrl == null
+                          ? "https://cdn.dsmcdn.com/ty644/product/media/images/20221213/11/235843656/154436277/1/1_org_zoom.jpg"
+                          : imageUrl!,
+                      isOnSale: isOnSale,
+                      //isPiece: isPiece
+              ))
+            );
+          },
           child: Padding(
             padding: const EdgeInsets.all(5.0), //8 yapınca pixel error
             child: Column(
@@ -38,7 +108,9 @@ class _ProductWidgetState extends State<ProductWidget> {
                     Flexible(
                       flex: 3,
                       child: Image.network(
-                        "https://cdn.dsmcdn.com/ty644/product/media/images/20221213/11/235843656/154436277/1/1_org_zoom.jpg",
+                        imageUrl == null
+                        ? "https://cdn.dsmcdn.com/ty644/product/media/images/20221213/11/235843656/154436277/1/1_org_zoom.jpg"
+                        : imageUrl!,
                         fit: BoxFit.fill,
                         // width: screenWidth * 0.12,
                         height: size.width * 0.16, //12
@@ -69,7 +141,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                 Row(
                   children: [
                     TextWidget(
-                      text: "200₺",
+                      text: isOnSale ? '${salePrice.toStringAsFixed(2)}₺' : '$price₺',
                       color: color,
                       textSize: 18,
                     ),
@@ -77,16 +149,16 @@ class _ProductWidgetState extends State<ProductWidget> {
                       width: 7,
                     ),
                     Visibility(
-                        visible: true,
+                        visible: isOnSale,
                         child: Text(
-                          "250₺",
+                          "$price ₺",
                           style: TextStyle(
                               decoration: TextDecoration.lineThrough,
                               color: color),
                         )),
                     const Spacer(),
                     TextWidget(
-                      text: "Quantity",
+                      text: "Quantity", //isPiece ? "Piece" : "Kg",
                       color: color,
                       textSize: 18,
                     ),
@@ -96,7 +168,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                   height: 4, //2
                 ),
                 TextWidget(
-                  text: 'Title',
+                  text: title,
                   color: color,
                   textSize: 24,
                   isTitle: true,
