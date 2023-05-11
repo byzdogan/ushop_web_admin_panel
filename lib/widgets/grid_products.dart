@@ -54,11 +54,11 @@ class ProductGridWidget extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.all(18.0),
                 child: Text(
-                  "There is not any product in USHOP yet!",
+                  "There isn't any product in USHOP yet!",
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
-                    backgroundColor: Colors.cyan,
+                    //backgroundColor: Colors.cyan,
                   ),
                 ),
               ),

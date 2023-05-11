@@ -88,12 +88,12 @@ class _ProductWidgetState extends State<ProductWidget> {
                       salePrice: salePrice,
                       productCat: productCategory,
                       imageUrl: imageUrl == null
-                          ? "https://cdn.dsmcdn.com/ty644/product/media/images/20221213/11/235843656/154436277/1/1_org_zoom.jpg"
+                          ? "https://uskudar.edu.tr/assets/kurumsal/logo-en/png/uskudar-university-logo.png"
                           : imageUrl!,
                       isOnSale: isOnSale,
                       //isPiece: isPiece
               ))
-            );
+            ).then((value) => setState(() {}));
           },
           child: Padding(
             padding: const EdgeInsets.all(5.0), //8 yapınca pixel error
@@ -109,7 +109,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                       flex: 3,
                       child: Image.network(
                         imageUrl == null
-                        ? "https://cdn.dsmcdn.com/ty644/product/media/images/20221213/11/235843656/154436277/1/1_org_zoom.jpg"
+                        ? "https://uskudar.edu.tr/assets/kurumsal/logo-en/png/uskudar-university-logo.png"
                         : imageUrl!,
                         fit: BoxFit.fill,
                         // width: screenWidth * 0.12,
