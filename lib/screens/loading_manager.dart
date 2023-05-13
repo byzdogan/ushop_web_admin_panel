@@ -17,9 +17,9 @@ class LoadingManager extends StatelessWidget {
               : Container(),
           isLoading
               ? const Center(
-            child: CircularProgressIndicator(
-              color: Colors.cyan,),)
-              : Container(),
+                  child: CircularProgressIndicator(
+                    color: Colors.cyan,),)
+                    : Container(),
         ]
     );
   }

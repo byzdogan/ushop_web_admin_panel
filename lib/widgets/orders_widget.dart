@@ -1,17 +1,36 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ushop_admin_panel/services/utils.dart';
 import 'package:ushop_admin_panel/widgets/text_widget.dart';
 
 class OrdersWidget extends StatefulWidget {
-  const OrdersWidget({Key? key}) : super(key: key);
+  const OrdersWidget({
+    Key? key,
+    required this.price,
+    required this.totalPrice,
+    required this.productId,
+    required this.userId,
+    required this.imageUrl,
+    required this.userName,
+    required this.quantity,
+    required this.orderDate,
+    required this.orderId})
+      : super(key: key);
+  final double price, totalPrice;
+  final String productId, userId, orderId, imageUrl, userName;
+  final int quantity;
+  final Timestamp orderDate;
 
   @override
   _OrdersWidgetState createState() => _OrdersWidgetState();
 }
 
 class _OrdersWidgetState extends State<OrdersWidget> {
+  late String orderDateStrng;
   @override
   void initState() {
+    var postDate = widget.orderDate.toDate();
+    orderDateStrng = "${postDate.day}/${postDate.month}/${postDate.year} ${postDate.hour}:${postDate.minute}";
     super.initState();
   }
 
@@ -34,7 +53,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
               Flexible(
                 flex: size.width < 650 ? 3 : 1,
                 child: Image.network(
-                  "https://cdn.dsmcdn.com/ty644/product/media/images/20221213/11/235843656/154436277/1/1_org_zoom.jpg",
+                  widget.imageUrl,
                   fit: BoxFit.fill,
                   // height: screenWidth * 0.15,
                   // width: screenWidth * 0.15,
@@ -50,7 +69,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     TextWidget(
-                      text: "12x For 200₺",
+                      text: "${widget.quantity} x For ${widget.price.toStringAsFixed(2)}₺",
                       color: color,
                       textSize: 16,
                       isTitle: true,
@@ -68,7 +87,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                             width: 5,
                           ),
                           TextWidget(
-                            text: "Beyza Doğan",
+                            text: widget.userName,
                             color: color,
                             textSize: 14,
                             isTitle: true,
@@ -76,8 +95,8 @@ class _OrdersWidgetState extends State<OrdersWidget> {
                         ],
                       ),
                     ),
-                    const Text(
-                      "01/02/2023",
+                    Text(
+                      orderDateStrng,
                     )
                   ],
                 ),

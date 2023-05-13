@@ -21,8 +21,8 @@ void main() async {
       messagingSenderId: "587526600299", // Your messagingSenderId
       projectId: "ushopecommerceapplication", // Your projectId
       storageBucket: "ushopecommerceapplication.appspot.com",
-      /*authDomain: "ushopecommerceapplication.firebaseapp.com",
-        measurementId: "G-RBDT58W304"*/
+      authDomain: "ushopecommerceapplication.firebaseapp.com",
+      //  measurementId: "G-RBDT58W304"
     ),
   );
   runApp(const MyApp());

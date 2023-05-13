@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:ushop_admin_panel/consts/constants.dart';
 import 'package:ushop_admin_panel/controllers/MenuController.dart';
@@ -95,7 +96,9 @@ class DashboardScreen extends StatelessWidget {
                           childAspectRatio: size.width < 1400 ? 0.8 : 1.05,
                         ),
                       ),
-                      const OrdersList(),
+                      const OrdersList(
+                        isInDashboard: true,
+                      ),
                     ],
                   ),
                 ),

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ushop_admin_panel/consts/constants.dart';
@@ -46,6 +47,7 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
                   children: [
                     const SizedBox(height: 15,),
                     Header(
+                      showTextField: false,
                       title: "All Orders",
                       fct: () {
                         context.read<MenuController>().controlAllOrders(); //how to access a provider
@@ -55,9 +57,10 @@ class _AllOrdersScreenState extends State<AllOrdersScreen> {
                       const SizedBox(height: 20,),
                       const Padding(
                           padding: EdgeInsets.all(8.0),
-                          child: OrdersList(),
+                          child: OrdersList(
+                            isInDashboard: false,
+                          ),
                       ),
-
                   ],
                 ),
               ),

@@ -19,6 +19,7 @@ import 'package:ushop_admin_panel/services/global_method.dart';
 import 'package:ushop_admin_panel/services/utils.dart';
 import 'package:ushop_admin_panel/widgets/buttons.dart';
 import 'package:ushop_admin_panel/widgets/header.dart';
+import 'package:ushop_admin_panel/widgets/products_widget.dart';
 import 'package:ushop_admin_panel/widgets/side_menu.dart';
 import 'package:ushop_admin_panel/widgets/text_widget.dart';
 
