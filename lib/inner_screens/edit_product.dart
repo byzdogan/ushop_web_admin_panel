@@ -296,11 +296,11 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                           const SizedBox(
                                             height: 20,
                                           ),
-                                          TextWidget(
-                                            text: 'Measure unit*',
+                                          /*TextWidget(
+                                            text: 'Stock*',
                                             color: color,
                                             isTitle: true,
-                                          ),
+                                          ),*/
                                           const SizedBox(
                                             height: 10,
                                           ),
@@ -377,7 +377,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                                 const SizedBox(
                                                   width: 10,
                                                 ),
-                                                salePourcentageDropDownWidget(
+                                                salePercentageDropDownWidget(
                                                     color),
                                               ],
                                             ),
@@ -496,11 +496,19 @@ class _EditProductScreenState extends State<EditProductScreen> {
     );
   }
 
-  DropdownButtonHideUnderline salePourcentageDropDownWidget(Color color) {
+  DropdownButtonHideUnderline salePercentageDropDownWidget(Color color) {
     return DropdownButtonHideUnderline(
       child: DropdownButton<String>(
         style: TextStyle(color: color),
         items: const [
+          DropdownMenuItem<String>(
+            child: Text('0%'),
+            value: '0',
+          ),
+          DropdownMenuItem<String>(
+            child: Text('5%'),
+            value: '5',
+          ),
           DropdownMenuItem<String>(
             child: Text('10%'),
             value: '10',
@@ -508,6 +516,10 @@ class _EditProductScreenState extends State<EditProductScreen> {
           DropdownMenuItem<String>(
             child: Text('15%'),
             value: '15',
+          ),
+          DropdownMenuItem<String>(
+            child: Text('20%'),
+            value: '20',
           ),
           DropdownMenuItem<String>(
             child: Text('25%'),
@@ -522,8 +534,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
             value: '75',
           ),
           DropdownMenuItem<String>(
-            child: Text('0%'),
-            value: '0',
+            child: Text('80%'),
+            value: '80',
+          ),
+          DropdownMenuItem<String>(
+            child: Text('90%'),
+            value: '90',
           ),
         ],
         onChanged: (value) {

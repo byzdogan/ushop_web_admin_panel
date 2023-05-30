@@ -30,7 +30,7 @@ class _OrdersWidgetState extends State<OrdersWidget> {
   @override
   void initState() {
     var postDate = widget.orderDate.toDate();
-    orderDateStrng = "${postDate.day}/${postDate.month}/${postDate.year} ${postDate.hour}:${postDate.minute}";
+    orderDateStrng = "${postDate.day}/${postDate.month}/${postDate.year}";
     super.initState();
   }
 

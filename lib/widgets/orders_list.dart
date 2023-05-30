@@ -15,6 +15,7 @@ class OrdersList extends StatelessWidget {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection("orders")
+          .orderBy("orderDate", descending: false)
           .snapshots(), //collectiondaki dosya ismiyle aynı olmalı
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {

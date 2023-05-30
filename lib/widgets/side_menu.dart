@@ -22,17 +22,18 @@ class _SideMenuState extends State<SideMenu> {
   @override
   Widget build(BuildContext context) {
     final theme = Utils(context).getTheme;
+    final color = Utils(context).color;
     final themeState = Provider.of<DarkThemeProvider>(context);
 
-    final color = Utils(context).color;
     return Drawer(
       child: ListView(
         children: [
           DrawerHeader(
-            child: Image.asset(
-              "assets/images/uulogoo.jpg",
+                child: Image.asset(
+                  "assets/images/ushoplogo.png",
+                  fit:  BoxFit.cover,
+                ),
             ),
-          ),
           DrawerListTile(
             title: "Main",
             press: () {
@@ -64,7 +65,7 @@ class _SideMenuState extends State<SideMenu> {
             icon: Icons.shopping_bag,
           ),
           SwitchListTile(
-              title: const Text('Theme'),
+              title: const Text("Theme"),
               secondary: Icon(themeState.getDarkTheme
                   ? Icons.dark_mode_outlined
                   : Icons.light_mode_outlined),

@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:iconly/iconly.dart';
 import 'package:ushop_admin_panel/inner_screens/edit_product.dart';
 import 'package:ushop_admin_panel/services/global_method.dart';
 import 'package:ushop_admin_panel/services/utils.dart';
+import 'package:ushop_admin_panel/widgets/buttons.dart';
 import 'package:ushop_admin_panel/widgets/text_widget.dart';
 
 class ProductWidget extends StatefulWidget {
@@ -31,6 +34,25 @@ class _ProductWidgetState extends State<ProductWidget> {
     getProductsData();
     super.initState();
   }
+
+  /*Future<void> fetchProducts() async {
+    await FirebaseFirestore.instance.collection("products").get().then((
+        QuerySnapshot productSnapshot) {
+      _productsList = []; //_productsList.clear();
+      productSnapshot.docs.forEach((element) {
+        _productsList.insert(
+            0,
+            ProductModel(
+              id: element.get("id"),
+              title: element.get("title"),
+              imageUrl: element.get("imageUrl"),
+              productCategoryName: element.get("productCategoryName"),
+              price: double.parse(element.get("price"),),
+              salePrice: (element.get("salePrice")).toDouble(),
+              isOnSale: element.get("isOnSale"), ));
+      });
+    }); // tüm ürünleri göstermek istediğimiz için id eklemedik kullanıcada öyle değildi.
+  }*/
 
   Future<void> getProductsData() async {
     setState(() {
@@ -66,10 +88,10 @@ class _ProductWidgetState extends State<ProductWidget> {
     }
   }
 
+
   @override
   Widget build(BuildContext context) {
     Size size = Utils(context).getScreenSize;
-
     final color = Utils(context).color;
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -88,7 +110,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                       salePrice: salePrice,
                       productCat: productCategory,
                       imageUrl: imageUrl == null
-                          ? "https://uskudar.edu.tr/assets/kurumsal/logo-en/png/uskudar-university-logo.png"
+                          ? "assets/images/ushoplogo.png"
                           : imageUrl!,
                       isOnSale: isOnSale,
                       //isPiece: isPiece
@@ -109,7 +131,7 @@ class _ProductWidgetState extends State<ProductWidget> {
                       flex: 3,
                       child: Image.network(
                         imageUrl == null
-                        ? "https://uskudar.edu.tr/assets/kurumsal/logo-en/png/uskudar-university-logo.png"
+                        ? "assets/images/ushoplogo.png"
                         : imageUrl!,
                         fit: BoxFit.fill,
                         // width: screenWidth * 0.12,
@@ -120,17 +142,26 @@ class _ProductWidgetState extends State<ProductWidget> {
                     PopupMenuButton(
                         itemBuilder: (context) => [
                           PopupMenuItem(
-                            onTap: () {},
-                            child: Text("Edit"),
-                            value: 1,
-                          ),
-                          PopupMenuItem(
-                            onTap: () {},
+                            onTap: () async{
+                              await FirebaseFirestore.instance
+                                  .collection("products")
+                                  .doc(widget.id)
+                                  .delete();
+                              await Fluttertoast.showToast( //showToast boolean olduğu için
+                                msg: "Product has beeen deleted!",
+                                toastLength: Toast.LENGTH_LONG,
+                                gravity: ToastGravity.CENTER,
+                                timeInSecForIosWeb: 1,
+                              );
+                              while (Navigator.canPop(context)){ //side menu varken bu olmaz
+                                Navigator.pop(context);
+                              }
+                            },
                             child: Text(
                               "Delete",
                               style: TextStyle(color: Colors.redAccent),
                             ),
-                            value: 2,
+                            value: 1,
                           ),
                         ])
                   ],
@@ -164,11 +195,11 @@ class _ProductWidgetState extends State<ProductWidget> {
                     ),*/
                   ],
                 ),
-                TextWidget(
+                /*TextWidget(
                   text: "Stock :", //isPiece ? "Piece" : "Kg",
                   color: color,
                   textSize: 18,
-                ),
+                ),*/
                 const SizedBox(
                   height: 4, //2
                 ),

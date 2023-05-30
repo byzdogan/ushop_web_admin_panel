@@ -53,7 +53,9 @@ class Header extends StatelessWidget {
                         borderRadius: BorderRadius.all(Radius.circular(10)),
                       ),
                       suffixIcon: InkWell(
-                        onTap: () {},
+                        onTap: () {
+
+                        },
                         child: Container(
                           padding: const EdgeInsets.all(defaultPadding * 0.75),
                           margin: const EdgeInsets.symmetric(
